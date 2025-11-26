@@ -89,5 +89,6 @@ export const db = {
     getFromCollectionByFieldValue,
     getOneFromCollectionByFieldValue,
     POSTS,
-    USERS
+    USERS,
+    ITEMS
 }
