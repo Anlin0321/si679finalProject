@@ -8,6 +8,10 @@
 *.pem
 *.cert
 
+*claude
+
+*.job.md
+
 # testing
 /coverage
 
