@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 import https from 'https';
 
 // import { postRouter } from './routes/postRoute.js';
-// import { errorHandler } from './middleware/errorHandler.js';
-// import { authRouter } from './routes/authRoute.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { authRouter } from './routes/authRoute.js';
 // import { userRouter } from './routes/userRoute.js';
 
 
@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(errorHandler);
 
 // app.use('/posts', postRouter);
-// app.use('/login', authRouter);
+app.use('/login', authRouter);
 // app.use('/user', userRouter);
 
 const credentials={
