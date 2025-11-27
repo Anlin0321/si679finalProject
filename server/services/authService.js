@@ -8,7 +8,7 @@ const SALT_ROUNDS = 11;
 
 const registerUser = async (username, password, displayName) => {
     // 1. check if username already exists, error if yes
-    const user = await db.getFromCollectionByFieldValue(db.USERS, 'username', username);
+    const user = await db.getOneFromCollectionByFieldValue(db.USERS, 'username', username);
     if (user) {
         throw new Error('username already exists');
     }
