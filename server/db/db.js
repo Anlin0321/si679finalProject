@@ -1,6 +1,5 @@
 import { MongoClient, ObjectId } from "mongodb";
 
-;
 let mongoClient = null;
 let theDb = null;
 
