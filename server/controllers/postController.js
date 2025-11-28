@@ -36,7 +36,11 @@ const addPost = async (req, res) => {
 }
 
 const updatePost = async (req, res) => {
-    const { postId } = req.query;
+    const { postId, userId } = req.query;
+    const matchedPost = await postService.getById(postId);
+    if (matchedPost.userId != userId) {
+        throw new Error("Cannot change others post.")
+    }
     const updateInfo = req.body;
     const { matchedCount, modifiedCount } = await postService.update(
         postId, updateInfo
