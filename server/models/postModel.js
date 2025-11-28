@@ -6,7 +6,12 @@ class Post {
     price = '';
     shipment= '';
     itemId = '';
-    userId = ''
+    userId = '';
+    condition = '';
+    age = '';
+    images = [];
+    availabilityStatus = 'available';
+    isActive = true;
 
     constructor(postFields) {
         const id = postFields.id ?? String(Date.now());
@@ -21,6 +26,11 @@ class Post {
         this.shipment = postFields.shipment ?? this.shipment;
         this.itemId = postFields.itemId ?? this.itemId;
         this.userId = postFields.userId ?? this.userId;
+        this.condition = itemFields.condition ?? this.condition;
+        this.age = itemFields.age ?? this.age;
+        this.images = itemFields.images ?? this.images;
+        this.availabilityStatus = itemFields.availabilityStatus ?? this.availabilityStatus;
+        this.isActive = itemFields.isActive ?? this.isActive;
 
     }
 
@@ -32,6 +42,34 @@ class Post {
         delete postDocument._id;
         const post = new Post({ id, ...postDocument });
         return post;
+    }
+
+    validateStatus = () => {
+        const validStatuses = ['available', 'sold', 'reserved', 'removed'];
+        if (!validStatuses.includes(this.availabilityStatus)) {
+            throw new Error(`Invalid availability status: ${this.availabilityStatus}. Must be one of: ${validStatuses.join(', ')}`);
+        }
+        return true;
+    }
+
+    validateCondition = () => {
+        const validConditions = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
+        if (this.condition && !validConditions.includes(this.condition)) {
+            throw new Error(`Invalid condition: ${this.condition}. Must be one of: ${validConditions.join(', ')}`);
+        }
+        return true;
+    }
+
+    validate = () => {
+        if (!this.title || this.title.trim() === '') {
+            throw new Error('Title is required');
+        }
+        if (!this.category || this.category.trim() === '') {
+            throw new Error('Category is required');
+        }
+        this.validateStatus();
+        this.validateCondition();
+        return true;
     }
 }
 export { Post };
