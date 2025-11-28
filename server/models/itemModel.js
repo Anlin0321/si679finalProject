@@ -26,6 +26,19 @@ class Item {
         const item = new Item({ id, ...itemDocument });
         return item;
     }
+
+    validate = () => {
+        if (!this.title || this.title.trim() === '') {
+            throw new Error('Title is required');
+        }
+        if (!this.category || this.category.trim() === '') {
+            throw new Error('Category is required');
+        }
+        if (!this.description || this.description.trim() === '') {
+            throw new Error('Description is required');
+        }
+        return true;
+    }
 }
 
 export { Item };

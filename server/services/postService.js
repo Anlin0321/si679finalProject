@@ -1,5 +1,6 @@
 import { db } from '../db/db.js';
 import { Post } from '../models/postModel.js';
+import { itemService } from './itemService.js';
 
 const getAll = async () => {
     const postDocs = await db.getAllInCollection(db.POSTS);
@@ -19,6 +20,14 @@ const getByAuthorId = async (id) => {
 }
 
 const add = async (postInfo) => {
+    // Validate that itemId exists
+    if (postInfo.itemId) {
+        const item = await itemService.getById(postInfo.itemId);
+        if (!item) {
+            throw new Error('Invalid itemId: item does not exist');
+        }
+    }
+
     const { insertedId } = await db.addToCollection(db.POSTS, postInfo);
     return {
         id: insertedId.toString(),

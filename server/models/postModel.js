@@ -26,11 +26,11 @@ class Post {
         this.shipment = postFields.shipment ?? this.shipment;
         this.itemId = postFields.itemId ?? this.itemId;
         this.userId = postFields.userId ?? this.userId;
-        this.condition = itemFields.condition ?? this.condition;
-        this.age = itemFields.age ?? this.age;
-        this.images = itemFields.images ?? this.images;
-        this.availabilityStatus = itemFields.availabilityStatus ?? this.availabilityStatus;
-        this.isActive = itemFields.isActive ?? this.isActive;
+        this.condition = postFields.condition ?? this.condition;
+        this.age = postFields.age ?? this.age;
+        this.images = postFields.images ?? this.images;
+        this.availabilityStatus = postFields.availabilityStatus ?? this.availabilityStatus;
+        this.isActive = postFields.isActive ?? this.isActive;
 
     }
 
@@ -64,8 +64,8 @@ class Post {
         if (!this.title || this.title.trim() === '') {
             throw new Error('Title is required');
         }
-        if (!this.category || this.category.trim() === '') {
-            throw new Error('Category is required');
+        if (!this.itemId || this.itemId.trim() === '') {
+            throw new Error('ItemId is required');
         }
         this.validateStatus();
         this.validateCondition();

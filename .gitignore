@@ -8,7 +8,8 @@
 *.pem
 *.cert
 
-*claude
+*claude*
+*CLAUDE*
 
 *.job.md
 
