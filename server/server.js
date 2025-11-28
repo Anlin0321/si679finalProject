@@ -7,7 +7,7 @@ import { postRouter } from './routes/postRoute.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { authRouter } from './routes/authRoute.js';
 import { itemRouter } from './routes/itemRoute.js';
-// import { userRouter } from './routes/userRoute.js';
+import { userRouter } from './routes/userRoute.js';
 
 
 dotenv.config();
@@ -23,7 +23,7 @@ app.use(errorHandler);
 app.use('/posts', postRouter);
 app.use('/login', authRouter);
 app.use('/items', itemRouter);
-// app.use('/user', userRouter);
+app.use('/user', userRouter);
 
 const credentials={
     key: process.env.TLS_SERVER_KEY,

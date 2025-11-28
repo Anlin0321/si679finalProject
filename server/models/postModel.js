@@ -6,7 +6,7 @@ class Post {
     price = '';
     shipment= '';
     itemId = '';
-    userId = '';
+    authorId = '';
     condition = '';
     age = '';
     images = [];
@@ -25,7 +25,7 @@ class Post {
         this.price = postFields.price ?? this.price;
         this.shipment = postFields.shipment ?? this.shipment;
         this.itemId = postFields.itemId ?? this.itemId;
-        this.userId = postFields.userId ?? this.userId;
+        this.authorId = postFields.authorId ?? this.authorId;
         this.condition = postFields.condition ?? this.condition;
         this.age = postFields.age ?? this.age;
         this.images = postFields.images ?? this.images;
