@@ -76,6 +76,15 @@ const getOneFromCollectionByFieldValue= async (collectionName, fieldName, fieldV
     return doc;
 }
 
+const queryCollection = async (collectionName, queryObject) => {
+    if (!mongoClient) { await init(); }
+    const docs = await theDb
+        .collection(collectionName)
+        .find(queryObject)
+        .toArray();
+    return docs;
+}
+
 
 export const db = {
     init,
@@ -87,6 +96,7 @@ export const db = {
     deleteFromCollectionById,
     getFromCollectionByFieldValue,
     getOneFromCollectionByFieldValue,
+    queryCollection,
     POSTS,
     USERS,
     ITEMS

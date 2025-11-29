@@ -2,29 +2,61 @@
 import { postService } from '../services/postService.js';
 
 const getPosts = async (req, res) => {
-    const { postId, authorId } = req.query;
-
     try {
+        const { postId, authorId, availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch } = req.query;
+
+        // Define filter parameters
+        const filterParams = { availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch };
+        const hasFilterParams = Object.values(filterParams).some(val => val !== undefined);
+        const otherParams = Object.keys(req.query).filter(key => !['postId', 'authorId'].includes(key));
+
+        // Legacy single post lookup
         if (postId) {
+            if (otherParams.length > 0) {
+                return res.status(400).json({
+                    error: 'postId cannot be combined with other query parameters'
+                });
+            }
             const thePost = await postService.getById(postId);
             if (!thePost) {
                 return res.status(404).json({ error: 'Post not found' });
             }
             return res.json(thePost);
         }
+
+        // Legacy author lookup
         if (authorId) {
-            const thePost = await postService.getByAuthorId(authorId);
-            if (!thePost) {
-                return res.status(404).json({ error: 'Post not found' });
+            if (otherParams.length > 0) {
+                return res.status(400).json({
+                    error: 'authorId cannot be combined with other query parameters'
+                });
             }
-            return res.json(thePost);
+            const posts = await postService.getByAuthorId(authorId);
+            if (!posts || posts.length === 0) {
+                return res.status(404).json({ error: 'No posts found for this author' });
+            }
+            return res.json(posts);
         }
-        // Otherwise, return all posts
+
+        // New filtering system
+        if (hasFilterParams) {
+            const filteredPosts = await postService.getByFilters(filterParams);
+            return res.json(filteredPosts);
+        }
+
+        // Default: return all posts
         const allPosts = await postService.getAll();
-        res.json(allPosts);
+        return res.json(allPosts);
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // Validation errors return 400
+        if (error.message.includes('Invalid') ||
+            error.message.includes('must be') ||
+            error.message.includes('cannot')) {
+            return res.status(400).json({ error: error.message });
+        }
+        // Other errors return 500
+        return res.status(500).json({ error: error.message });
     }
 };
 
