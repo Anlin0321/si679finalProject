@@ -12,6 +12,7 @@ class Post {
     images = [];
     availabilityStatus = 'available';
     isActive = true;
+    listingType = '';
 
     constructor(postFields) {
         const id = postFields.id ?? String(Date.now());
@@ -31,6 +32,7 @@ class Post {
         this.images = postFields.images ?? this.images;
         this.availabilityStatus = postFields.availabilityStatus ?? this.availabilityStatus;
         this.isActive = postFields.isActive ?? this.isActive;
+        this.listingType = postFields.listingType ?? this.listingType;
 
     }
 
@@ -60,6 +62,14 @@ class Post {
         return true;
     }
 
+    validateListingType = () => {
+        const validListingTypes = ['wanted', 'for-sale'];
+        if (!validListingTypes.includes(this.listingType)) {
+            throw new Error(`Invalid listingType: ${this.listingType}. Must be one of: ${validListingTypes.join(', ')}`);
+        }
+        return true;
+    }
+
     validate = () => {
         if (!this.title || this.title.trim() === '') {
             throw new Error('Title is required');
@@ -67,8 +77,12 @@ class Post {
         if (!this.itemId || this.itemId.trim() === '') {
             throw new Error('ItemId is required');
         }
+        if (!this.listingType || this.listingType.trim() === '') {
+            throw new Error('ListingType is required');
+        }
         this.validateStatus();
         this.validateCondition();
+        this.validateListingType();
         return true;
     }
 }
