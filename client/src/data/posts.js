@@ -104,7 +104,7 @@ const getPost = async (id) => {
  * @param {Object} postData - The post data to create.
  * @returns {Promise<Object>} - The created post object.
  */
-const createPost = async (postData) => {
+const createPost = async (postData, user) => {
   const id = new Date().getTime().toString();
   const newPost = {
     ...postData,
@@ -112,7 +112,7 @@ const createPost = async (postData) => {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
-  const response = await api.handlePost(api.ARTICLES_ENDPOINT, newPost)
+  const response = await api.handlePost(api.ARTICLES_ENDPOINT, newPost, user.jwt)
   return response;
 };
 
@@ -124,7 +124,7 @@ const createPost = async (postData) => {
  *   Fields not included in the object will not be updated.
  * @throws {Error} - if post not found
  */
-const updatePost = async (id, updatedFields) => {
+const updatePost = async (id, updatedFields, user) => {
   const thePost = await api.handleGet(api.ARTICLES_ENDPOINT, {postId: id});
 
   if (!thePost) {
@@ -136,7 +136,7 @@ const updatePost = async (id, updatedFields) => {
     ...updatedFields,
     updatedAt: new Date().toISOString(),
   };
-  const response = await api.handlePatch(api.ARTICLES_ENDPOINT, updatedPost, {postId: id})
+  const response = await api.handlePatch(api.ARTICLES_ENDPOINT, updatedPost,user.jwt, {postId: id})
   return response;
 };
 

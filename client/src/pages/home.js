@@ -26,18 +26,18 @@ function Home() {
             <thead>
               <tr>
                 <th>Title</th>
+                <th>Message</th>
                 <th>Author</th>
-                <th>Creation Date</th>
-                <th>Last Updated</th>
+                <th>price</th>
               </tr>
             </thead>
             <tbody>
               {posts.map((post) => (
                 <tr key={post.id}>
                   <td><Link to={`/viewPost/${post.id}`}>{post.title}</Link></td>
+                  <td>{post.message}</td>
                   <td>{post.authorName}</td>
-                  <td>{new Date(post.createdAt).toLocaleString()}</td>
-                  <td>{new Date(post.updatedAt).toLocaleString()}</td>
+                  <td>{post.price}</td>
                 </tr>
               ))}
             </tbody>

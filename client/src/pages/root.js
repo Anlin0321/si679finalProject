@@ -11,7 +11,7 @@ function Root() {
     <div className="App">
       <header className="App-header">
         <div className="App-header-left">
-          <Link to="/">Blogtastic</Link>
+          <Link to="/">StockZ</Link>
         </div>
         <div className="App-header-right">
           {currentUser && 

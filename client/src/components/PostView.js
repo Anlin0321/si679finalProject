@@ -4,11 +4,11 @@ function PostView({ post }) {
   return (
     <div className="post-complete">
       <h1>{post.title}</h1>
-      <p>{post.content}</p>
+      <p>{post.message}</p>
       <div className="post-meta">
         <p><strong>Author:</strong> {post.authorName || 'Unknown Author'}</p>
-        <p><strong>Created:</strong> {post.createdAt}</p>
-        <p><strong>Updated:</strong> {post.updatedAt}</p>
+        <p><strong>price:</strong> {post.price}</p>
+        <p><strong>status:</strong> {post.availabilityStatus}</p>
       </div>
     </div>
   );

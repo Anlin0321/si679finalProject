@@ -21,7 +21,7 @@ const handleGet = async (url, queryParams = null) => {
   }
 }
 
-const handlePost = async (url, body, queryParams = null) => {
+const handlePost = async (url, body, jwt, queryParams = null) => {
   if (queryParams) {
     url = buildUrlWithQuery(url, queryParams);
   }
@@ -29,6 +29,7 @@ const handlePost = async (url, body, queryParams = null) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}`
     },
     body: JSON.stringify(body),
   });
@@ -53,7 +54,7 @@ const handleDelete = async (url, queryParams = null) => {
   }
 };
 
-const handlePatch = async (url, body, queryParams = null) => {
+const handlePatch = async (url, body, jwt, queryParams = null) => {
   if (queryParams) {
     url = buildUrlWithQuery(url, queryParams);
   }
@@ -61,6 +62,7 @@ const handlePatch = async (url, body, queryParams = null) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}`
     },
     body: JSON.stringify(body),
   });

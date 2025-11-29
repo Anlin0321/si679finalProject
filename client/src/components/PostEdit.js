@@ -26,28 +26,20 @@ function PostEdit({ post, currentUser }) {
       <p><input type="text" value={workingPost.title} onChange={(e) => {
         setWorkingPost({ ...workingPost, title: e.target.value });
       }} /></p>
-      <p><strong>Body:</strong></p>
+      <p><strong>Message:</strong></p>
       <p><textarea value={workingPost.content} onChange={(e) => {
-        setWorkingPost({ ...workingPost, content: e.target.value });
+        setWorkingPost({ ...workingPost, message: e.target.value });
       }} /></p>
       <div className="post-meta">
         <p><strong>Author:</strong> {workingPost.authorName || 'Unknown Author'}</p>
-        {workingPost.id ? 
-          (
-            <span>
-              <p><strong>Created:</strong> {workingPost.createdAt}</p>
-              <p><strong>Last Updated:</strong> {workingPost.updatedAt}</p>
-            </span>
-          ) :
-          <span/>
-        }
+
       </div>
       <button className="tasty-button small-button" onClick={async () => {
         delete workingPost.authorName;
         if (workingPost.id) {
-          await updatePost(workingPost.id, workingPost);
+          await updatePost(workingPost.id, workingPost, currentUser);
         } else {
-          await createPost(workingPost);
+          await createPost(workingPost, currentUser);
         }
         navigate('/managePosts');
 
