@@ -3,10 +3,10 @@ import { postService } from '../services/postService.js';
 
 const getPosts = async (req, res) => {
     try {
-        const { postId, authorId, availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch } = req.query;
+        const { postId, authorId, availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch, listingType } = req.query;
 
         // Define filter parameters
-        const filterParams = { availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch };
+        const filterParams = { availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch, listingType };
         const hasFilterParams = Object.values(filterParams).some(val => val !== undefined);
         const otherParams = Object.keys(req.query).filter(key => !['postId', 'authorId'].includes(key));
 

@@ -5,10 +5,11 @@ import { itemService } from './itemService.js';
 // Validation constants
 const VALID_AVAILABILITY_STATUSES = ['available', 'sold', 'reserved', 'removed'];
 const VALID_CONDITIONS = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
+const VALID_LISTING_TYPES = ['wanted', 'for-sale'];
 
 // Validation helper
 const validateFilterParams = (filters) => {
-    const { availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch } = filters;
+    const { availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch, listingType } = filters;
 
     if (availabilityStatus && !VALID_AVAILABILITY_STATUSES.includes(availabilityStatus)) {
         throw new Error(`Invalid availabilityStatus. Must be one of: ${VALID_AVAILABILITY_STATUSES.join(', ')}`);
@@ -16,6 +17,10 @@ const validateFilterParams = (filters) => {
 
     if (condition && !VALID_CONDITIONS.includes(condition)) {
         throw new Error(`Invalid condition. Must be one of: ${VALID_CONDITIONS.join(', ')}`);
+    }
+
+    if (listingType && !VALID_LISTING_TYPES.includes(listingType)) {
+        throw new Error(`Invalid listingType. Must be one of: ${VALID_LISTING_TYPES.join(', ')}`);
     }
 
     if (minPrice !== undefined) {
@@ -54,7 +59,7 @@ const validateFilterParams = (filters) => {
 // Query builder
 const buildFilterQuery = (filters) => {
     const query = {};
-    const { availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch } = filters;
+    const { availabilityStatus, condition, minPrice, maxPrice, isActive, titleSearch, listingType } = filters;
 
     // Exact match filters
     if (availabilityStatus) {
@@ -63,6 +68,10 @@ const buildFilterQuery = (filters) => {
 
     if (condition) {
         query.condition = condition;
+    }
+
+    if (listingType) {
+        query.listingType = listingType;
     }
 
     if (isActive !== undefined) {
