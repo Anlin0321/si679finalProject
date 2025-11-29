@@ -129,9 +129,9 @@ const updatePost = async (id, updatedFields, user) => {
   const updatedPost = {
     ...thePost,
     ...updatedFields,
-    updatedAt: new Date().toISOString(),
   };
-  const response = await api.handlePatch(api.ARTICLES_ENDPOINT, updatedPost,user.jwt, {postId: id})
+  delete updatedPost.id;
+  const response = await api.handlePatch(api.ARTICLES_ENDPOINT, updatedPost, user.jwt, {postId: id})
   return response;
 };
 

@@ -10,7 +10,6 @@ function PostEdit({ post, currentUser }) {
   if (!post) {
     post = {
       title: '',
-      content: '',
       authorId: currentUser.id,
       authorName: currentUser.displayName
     }
@@ -37,11 +36,11 @@ function PostEdit({ post, currentUser }) {
       <p><strong>Condition:</strong></p>
       <p>
         <select
-          value={workingPost.availabilityStatus}
+          value={workingPost.condition}
           onChange={(e) =>
             setWorkingPost({
               ...workingPost,
-              availabilityStatus: e.target.value,
+              condition: e.target.value,
             })
           }
         >
