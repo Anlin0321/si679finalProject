@@ -6,7 +6,6 @@ import { getPostsWithAuthorNames } from "../data/posts";
 
 function Home() {
   const [ posts, setPosts ] = useState([]);
-  console.log('in Home, posts:', posts);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,7 +25,7 @@ function Home() {
             <thead>
               <tr>
                 <th>Title</th>
-                <th>Message</th>
+                <th>Item</th>
                 <th>Author</th>
                 <th>price</th>
               </tr>
@@ -35,9 +34,9 @@ function Home() {
               {posts.map((post) => (
                 <tr key={post.id}>
                   <td><Link to={`/viewPost/${post.id}`}>{post.title}</Link></td>
-                  <td>{post.message}</td>
+                  <td>{post.itemId}</td>
                   <td>{post.authorName}</td>
-                  <td>{post.price}</td>
+                  <td>${post.price}</td>
                 </tr>
               ))}
             </tbody>

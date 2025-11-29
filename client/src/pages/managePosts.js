@@ -9,12 +9,13 @@ function ManagePosts() {
   const navigate = useNavigate();
   const [ posts, setPosts ] = useState([]);
   const { currentUser } = useContext(CurrentUserContext);
-  console.log(currentUser)
 
   useEffect(() => {
     const fetchPosts = async () => {
       const posts = await getPostsWithAuthorNames(currentUser.id);
       setPosts(posts);
+      console.log(posts);
+
     };
     
     if (!currentUser) {
@@ -39,8 +40,8 @@ function ManagePosts() {
               <tr>
                 <th>Title</th>
                 <th>Author</th>
-                <th>Creation Date</th>
-                <th>Last Updated</th>
+                <th>Price</th>
+                <th>Item</th>
                 <th></th>
               </tr>
             </thead>
@@ -48,15 +49,15 @@ function ManagePosts() {
               {posts.map((post) => (
                 <tr key={post.id}>
                   <td>{post.title}</td>
-                  <td>{post.authorName}</td>
-                  <td>{new Date(post.createdAt).toLocaleString()}</td>
-                  <td>{new Date(post.updatedAt).toLocaleString()}</td>
+                  <td>{currentUser.displayName}</td>
+                  <td>${post.price}</td>
+                  <td>{}</td>
                   <td className="button-cell">
                     <FaPencil onClick={() => {
                       navigate(`/editPost/${post.id}`);
                     }} />
                     <FaTrashCan onClick={async () => {
-                      await deletePost(post.id);
+                      await deletePost(post.id, currentUser);
                       const updatedPosts = await getPostsWithAuthorNames(currentUser.id);
                       setPosts(updatedPosts);
                     }} />

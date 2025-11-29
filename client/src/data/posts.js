@@ -22,7 +22,6 @@ import * as api from './api.js';
  */
 const getPostsWithAuthorNames = async (authorId = null) => {
   let posts = await getPosts(authorId);
-  console.log(posts)
   let users = await getUsers();
   return posts.map((post) => {
     const user = users.find((user) => user.id === post.authorId);
@@ -105,12 +104,8 @@ const getPost = async (id) => {
  * @returns {Promise<Object>} - The created post object.
  */
 const createPost = async (postData, user) => {
-  const id = new Date().getTime().toString();
   const newPost = {
     ...postData,
-    id: id,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
   };
   const response = await api.handlePost(api.ARTICLES_ENDPOINT, newPost, user.jwt)
   return response;

@@ -53,7 +53,7 @@ class Post {
     }
 
     validateCondition = () => {
-        const validConditions = ['New', 'Like New', 'Good', 'Fair', 'Poor'];
+        const validConditions = ['new', 'like_new', 'good', 'fair', 'poor'];
         if (this.condition && !validConditions.includes(this.condition)) {
             throw new Error(`Invalid condition: ${this.condition}. Must be one of: ${validConditions.join(', ')}`);
         }
