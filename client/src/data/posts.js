@@ -145,8 +145,8 @@ const updatePost = async (id, updatedFields, user) => {
  * @param {String} id - The ID of the post to delete.
  * @returns {Promise<void>} - A promise that resolves when the post is deleted.
  */
-const deletePost = async (id) => {
-  await api.handleDelete(api.ARTICLES_ENDPOINT, {postId: id});
+const deletePost = async (id, user) => {
+  await api.handleDelete(api.ARTICLES_ENDPOINT, user.jwt, {postId: id});
 };
 
 export {

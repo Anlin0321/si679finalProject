@@ -40,12 +40,15 @@ const handlePost = async (url, body, jwt, queryParams = null) => {
   }
 };
 
-const handleDelete = async (url, queryParams = null) => {
+const handleDelete = async (url, jwt, queryParams = null) => {
   if (queryParams) {
     url = buildUrlWithQuery(url, queryParams);
   }
   const response = await fetch(url, {
     method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${jwt}`
+    }
   });
   if (response.ok) {
     return response.statusText;

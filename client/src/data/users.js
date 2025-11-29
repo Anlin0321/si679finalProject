@@ -87,7 +87,7 @@ const updateUser = async (id, updatedFields) => {
  * @returns {Promise<void>} - A promise that resolves when the user is deleted.
  */
 const deleteUser = async (id) => {
-  await api.handleDelete(api.USERS_ENDPOINT, {id: id});
+  await api.handleDelete(api.USERS_ENDPOINT, null, {id: id});
   await deletePostsByUser(id);
 };
 
