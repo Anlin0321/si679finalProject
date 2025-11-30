@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import https from 'https';
+// import https from 'https';  // Commented out for HTTP in development
 
 import { postRouter } from './routes/postRoute.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -18,21 +18,28 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(errorHandler);
 
 app.use('/posts', postRouter);
 app.use('/login', authRouter);
 app.use('/items', itemRouter);
 app.use('/user', userRouter);
 
-const credentials={
-    key: process.env.TLS_SERVER_KEY,
-    cert: process.env.TLS_SERVER_CERT
-}
+// Error handler must be LAST to catch errors from routes
+app.use(errorHandler);
 
-const httpsServer = https.createServer(credentials, app);
+// HTTPS configuration (commented out for HTTP in development)
+// const credentials={
+//     key: process.env.TLS_SERVER_KEY,
+//     cert: process.env.TLS_SERVER_CERT
+// }
 
-httpsServer.listen(port, () => {
+// const httpsServer = https.createServer(credentials, app);
+
+// httpsServer.listen(port, () => {
+//     console.log(`Server started on port ${port}`)
+// })
+
+// HTTP server for development
+app.listen(port, () => {
     console.log(`Server started on port ${port}`)
-})
-// app.listen(port);
+});

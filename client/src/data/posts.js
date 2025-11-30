@@ -21,8 +21,8 @@ import * as api from './api.js';
  * @returns {Promise<Object[]>} - An array of post objects with author names.
  */
 const getPostsWithAuthorNames = async (authorId = null) => {
-  let posts = await getPosts(authorId);
-  let users = await getUsers();
+  let posts = (await getPosts(authorId)) || [];
+  let users = (await getUsers()) || [];
   return posts.map((post) => {
     const user = users.find((user) => user.id === post.authorId);
     if (!user) {
@@ -45,7 +45,7 @@ const getPostsWithAuthorNames = async (authorId = null) => {
  * @returns {Promise<Object>} - A post object with author name added.
  */
 const getPostWithAuthorName = async (postId) => {
-  let users = await getUsers();
+  let users = (await getUsers()) || [];
   let thePost = await getPost(postId);
 
   if (!thePost) {
@@ -70,7 +70,7 @@ const getPostWithAuthorName = async (postId) => {
  * @returns {Promise<Object>} - A post object with author name added.
  */
 const deletePostsByUser = async (userId) => {
-  const postsByUser = await getPosts(userId);
+  const postsByUser = (await getPosts(userId)) || [];
   postsByUser.forEach(async post => {
     await deletePost(post.id);
   })

@@ -15,7 +15,12 @@ const handleGet = async (url, queryParams = null) => {
   }
   const response = await fetch(`${url}`);
   if (response.ok) {
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (error) {
+      console.error(`Failed to parse JSON from ${url}:`, error);
+      return null;
+    }
   } else {
     throw new Error(`GET request to ${url} failed: ${response.statusText}`);
   }
@@ -34,7 +39,12 @@ const handlePost = async (url, body, jwt, queryParams = null) => {
     body: JSON.stringify(body),
   });
   if (response.ok) {
-    return response.json();
+    try {
+      return await response.json();
+    } catch (error) {
+      console.error(`Failed to parse JSON from ${url}:`, error);
+      return { success: true };  // Assume success if response was ok
+    }
   } else {
     throw new Error(`POST request to ${url} failed: ${response.statusText}`);
   }
