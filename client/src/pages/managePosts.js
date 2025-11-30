@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { FaTrashCan, FaPencil } from "react-icons/fa6";
 import { useContext, useState, useEffect } from "react";
 
-import { getPostsWithAuthorNames, deletePost } from "../data/posts";
+import { getPostsWithAuthorNamesAndItems, deletePost } from "../data/posts";
 import { CurrentUserContext } from "../App";
 
 function ManagePosts() {
@@ -12,14 +12,14 @@ function ManagePosts() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const posts = await getPostsWithAuthorNames(currentUser.id);
+      const posts = await getPostsWithAuthorNamesAndItems(currentUser.id);
       setPosts(posts);
       console.log(posts);
 
     };
-    
+
     if (!currentUser) {
-      navigate('/'); 
+      navigate('/');
       return;
     }
     fetchPosts();
@@ -51,14 +51,14 @@ function ManagePosts() {
                   <td>{post.title}</td>
                   <td>{currentUser.displayName}</td>
                   <td>${post.price}</td>
-                  <td>{}</td>
+                  <td>{post.itemTitle || 'No Item'}</td>
                   <td className="button-cell">
                     <FaPencil onClick={() => {
                       navigate(`/editPost/${post.id}`);
                     }} />
                     <FaTrashCan onClick={async () => {
                       await deletePost(post.id, currentUser);
-                      const updatedPosts = await getPostsWithAuthorNames(currentUser.id);
+                      const updatedPosts = await getPostsWithAuthorNamesAndItems(currentUser.id);
                       setPosts(updatedPosts);
                     }} />
 

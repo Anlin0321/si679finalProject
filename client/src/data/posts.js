@@ -1,4 +1,5 @@
 import { getUsers } from './users.js';
+import { getItems } from './items.js';
 import * as api from './api.js';
 
 
@@ -36,10 +37,60 @@ const getPostsWithAuthorNames = async (authorId = null) => {
 };
 
 /**
- * NOTE: You do not need to change this function! 
+ * Get all posts with author names AND item titles added, with optional filtering
+ * @param {number} authorId (optional) - The author ID to filter posts by.
+ * @param {Object} filters (optional) - Filter parameters for backend and client-side filtering.
+ * @returns {Promise<Object[]>} - An array of post objects with author names and item titles.
+ */
+const getPostsWithAuthorNamesAndItems = async (authorId = null, filters = {}) => {
+  // Build query params combining authorId and backend filters
+  const queryParams = {};
+
+  // Add backend filter params
+  if (filters.availabilityStatus) queryParams.availabilityStatus = filters.availabilityStatus;
+  if (filters.condition) queryParams.condition = filters.condition;
+  if (filters.listingType) queryParams.listingType = filters.listingType;
+  if (filters.minPrice) queryParams.minPrice = filters.minPrice;
+  if (filters.maxPrice) queryParams.maxPrice = filters.maxPrice;
+  if (filters.titleSearch) queryParams.titleSearch = filters.titleSearch;
+
+  // Fetch with filters
+  let posts = (await getPosts(authorId, queryParams)) || [];
+  let users = (await getUsers()) || [];
+  let items = (await getItems()) || [];
+
+  // Enrich posts
+  let enrichedPosts = posts.map((post) => {
+    const user = users.find((user) => user.id === post.authorId);
+    if (!user) {
+      throw new Error(`Post ${post.id} found with unknown author ${post.authorId}`);
+    }
+
+    const item = items.find((item) => item.id === post.itemId);
+
+    return {
+      ...post,
+      authorName: user?.displayName ?? 'Unknown Author',
+      itemTitle: item?.title ?? 'No Item',
+      itemCategory: item?.category ?? null
+    };
+  });
+
+  // Client-side filter for item category
+  if (filters.itemCategory) {
+    enrichedPosts = enrichedPosts.filter(post =>
+      post.itemCategory && post.itemCategory === filters.itemCategory
+    );
+  }
+
+  return enrichedPosts;
+};
+
+/**
+ * NOTE: You do not need to change this function!
  * If your implementations of getPost() and getUsers()
  * are working, this function will work just fine.
- * 
+ *
  * Get a single post with author name added (as opposed to just author id)
  * @param {String} postId - The post to get.
  * @returns {Promise<Object>} - A post object with author name added.
@@ -61,6 +112,43 @@ const getPostWithAuthorName = async (postId) => {
 }
 
 /**
+ * Get a single post with author name AND item details added
+ * @param {String} postId - The post to get.
+ * @returns {Promise<Object>} - A post object with author name and item details added.
+ */
+const getPostWithAuthorNameAndItem = async (postId) => {
+  let users = (await getUsers()) || [];
+  let items = (await getItems()) || [];
+  let thePost = await getPost(postId);
+
+  if (!thePost) {
+    throw new Error(`Post ${postId} not found.`);
+  }
+
+  let theAuthor = users.find(user => user.id === thePost.authorId);
+  if (!theAuthor) {
+    throw new Error(`Post ${thePost.id} has unknown author ${thePost.authorId}`);
+  }
+
+  let theItem = items.find(item => item.id === thePost.itemId);
+
+  thePost.authorName = theAuthor?.displayName ?? 'Unknown Author';
+
+  // Add item details if found
+  if (theItem) {
+    thePost.itemTitle = theItem.title;
+    thePost.itemDescription = theItem.description;
+    thePost.itemCategory = theItem.category;
+  } else {
+    thePost.itemTitle = 'No Item';
+    thePost.itemDescription = null;
+    thePost.itemCategory = null;
+  }
+
+  return thePost;
+};
+
+/**
  * NOTE: You do not need to change this function! 
  * If your implementations of getPosts() and deletePost()
  * are working, this function will work just fine.
@@ -80,11 +168,17 @@ const deletePostsByUser = async (userId) => {
  * Get all posts.
  * If an author is provided, it will return only posts by that author.
  * @param {String} author (optional) - The author ID to filter posts by.
+ * @param {Object} additionalParams (optional) - Additional query parameters for filtering.
  * @returns {Promise<Object[]>} - An array of post objects.
  */
-const getPosts = async (authorId = null) => {
+const getPosts = async (authorId = null, additionalParams = {}) => {
+  const queryParams = { ...additionalParams };
   if (authorId) {
-    return await api.handleGet(api.ARTICLES_ENDPOINT, {authorId: authorId});
+    queryParams.authorId = authorId;
+  }
+
+  if (Object.keys(queryParams).length > 0) {
+    return await api.handleGet(api.ARTICLES_ENDPOINT, queryParams);
   }
   return await api.handleGet(api.ARTICLES_ENDPOINT);
 };
@@ -146,7 +240,9 @@ const deletePost = async (id, user) => {
 
 export {
   getPostsWithAuthorNames,
+  getPostsWithAuthorNamesAndItems,
   getPostWithAuthorName,
+  getPostWithAuthorNameAndItem,
   deletePostsByUser,
   getPosts,
   getPost,

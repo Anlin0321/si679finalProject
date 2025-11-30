@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import PostView from "../components/PostView";
-import { getPostWithAuthorName } from "../data/posts";
+import { getPostWithAuthorNameAndItem } from "../data/posts";
 
 function ViewPost() {
   const { id } = useParams();
@@ -12,15 +12,15 @@ function ViewPost() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const post = await getPostWithAuthorName(id);
+        const post = await getPostWithAuthorNameAndItem(id);
         setPost(post);
       } catch (error) {
         navigate('/error', { state: { errorMessage: error.message }});
       }
     };
-    
+
     fetchPost();
-  
+
   }, [id]);
 
   if (!post) {

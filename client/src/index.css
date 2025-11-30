@@ -84,7 +84,6 @@ code {
 }
 
 .content-container {
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -112,7 +111,8 @@ h1 {
   justify-content: center;
   width: 100%;
   max-width: 1200px;
-  padding: 20px;
+  margin: 1.5rem 10rem;
+  padding: 1.5rem 3rem;
 }
 
 /* Blog posts table styling - using more specific selectors */
@@ -260,4 +260,87 @@ h1 {
 .small-button {
   width: 10%;
   margin: 1rem;
+}
+
+/* Filter Section Styling */
+.filters-container {
+  margin: 1.5rem 10rem;
+  padding: 1.5rem 3rem;
+  max-width: 1200px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters-container h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.15rem;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+  align-items: end;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-item label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  color: #555;
+}
+
+.filter-item input,
+.filter-item select {
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background-color: white;
+  transition: border-color 0.2s;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.filter-item button {
+  padding: 0.5rem 0.8rem;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+/* Make buttons span 2 columns each on desktop */
+.filter-item:nth-child(8),
+.filter-item:nth-child(9) {
+  grid-column: span 2;
+}
+
+/* Responsive Design */
+@media (max-width: 1023px) {
+  .filters-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Reset button spanning for tablet */
+  .filter-item:nth-child(8),
+  .filter-item:nth-child(9) {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
 }

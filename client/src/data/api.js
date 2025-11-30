@@ -3,6 +3,7 @@ const ARTICLES_ENDPOINT = `${API_URL}/posts?`;
 const AUTH_ENDPOINT = `${API_URL}/login?`;
 const ADMIN_ENDPOINT = `${API_URL}/login/register?`;
 const USERS_ENDPOINT = `${API_URL}/user?`;
+const ITEMS_ENDPOINT = `${API_URL}/items?`;
 
 const buildUrlWithQuery = (url, queryParams) => {
   const params = new URLSearchParams(queryParams);
@@ -86,13 +87,14 @@ const handlePatch = async (url, body, jwt, queryParams = null) => {
   }
 };
 
-export { 
-  handleGet, 
-  handlePost, 
+export {
+  handleGet,
+  handlePost,
   handleDelete,
   handlePatch,
   ARTICLES_ENDPOINT,
   AUTH_ENDPOINT,
   ADMIN_ENDPOINT,
-  USERS_ENDPOINT 
+  USERS_ENDPOINT,
+  ITEMS_ENDPOINT
 };
