@@ -1,3 +1,5 @@
+import { IMG_BASE_URL } from '../data/api';
+
 
 function PostView({ post }) {
 
@@ -10,13 +12,14 @@ function PostView({ post }) {
       {post.itemTitle && post.itemTitle !== 'No Item' && (
         <div className="item-details">
           <h2>Item Details</h2>
-          <p><strong>Item:</strong> {post.itemTitle}</p>
+          <p><strong>Item:</strong> {post.itemName}</p>
           {post.itemDescription && (
             <p><strong>Description:</strong> {post.itemDescription}</p>
           )}
           {post.itemCategory && (
             <p><strong>Category:</strong> {post.itemCategory}</p>
           )}
+          <img src={`${IMG_BASE_URL}/${post.itemImage}`} alt={post.itemName} className="product-image" />
         </div>
       )}
 

@@ -72,7 +72,8 @@ const getPostsWithAuthorNamesAndItems = async (authorId = null, filters = {}) =>
       ...post,
       authorName: user?.displayName ?? 'Unknown Author',
       itemTitle: item?.title ?? 'No Item',
-      itemCategory: item?.category ?? null
+      itemCategory: item?.category ?? null,
+      itemImage: item?.image ?? null
     };
   });
 
@@ -139,6 +140,8 @@ const getPostWithAuthorNameAndItem = async (postId) => {
     thePost.itemTitle = theItem.title;
     thePost.itemDescription = theItem.description;
     thePost.itemCategory = theItem.category;
+    thePost.itemImage = theItem?.image ?? null
+
   } else {
     thePost.itemTitle = 'No Item';
     thePost.itemDescription = null;

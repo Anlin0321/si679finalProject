@@ -4,6 +4,8 @@ const AUTH_ENDPOINT = `${API_URL}/login?`;
 const ADMIN_ENDPOINT = `${API_URL}/login/register?`;
 const USERS_ENDPOINT = `${API_URL}/user?`;
 const ITEMS_ENDPOINT = `${API_URL}/items?`;
+const IMG_BASE_URL = `${API_URL}/images`
+
 
 const buildUrlWithQuery = (url, queryParams) => {
   const params = new URLSearchParams(queryParams);
@@ -97,5 +99,6 @@ export {
   AUTH_ENDPOINT,
   ADMIN_ENDPOINT,
   USERS_ENDPOINT,
-  ITEMS_ENDPOINT
+  ITEMS_ENDPOINT,
+  IMG_BASE_URL
 };

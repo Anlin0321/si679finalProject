@@ -4,6 +4,7 @@ class Item {
     title = '';
     description = '';
     category = '';
+    image = '';
 
     constructor(itemFields) {
         const id = itemFields.id ?? String(Date.now());
@@ -13,6 +14,7 @@ class Item {
     updateProperties = (itemFields) => {
         this.id = itemFields.id ?? this.id;
         this.title = itemFields.title ?? this.title;
+        this.image = itemFields.image ?? this.image;
         this.description = itemFields.description ?? this.description;
         this.category = itemFields.category ?? this.category;
     }

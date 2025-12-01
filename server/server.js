@@ -25,6 +25,9 @@ socket.initSocket(server);
 
 
 app.use(cors());
+
+app.use(express.static('static'));
+
 app.use(express.json());
 
 app.use('/posts', postRouter);

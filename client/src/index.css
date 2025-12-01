@@ -344,3 +344,10 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+.product-image {
+  width: 160px;     /* or whatever size you want */
+  height: 160px;
+  object-fit: cover; /* crop instead of stretching */
+  border-radius: 8px;
+}
