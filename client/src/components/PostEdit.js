@@ -72,14 +72,19 @@ function PostEdit({ post, currentUser }) {
               setSelectedItemId('');
             } else {
               setIsCreatingNewItem(false);
-              setSelectedItemId(e.target.value);
-              setWorkingPost({ ...workingPost, itemId: e.target.value });
+              const parsed = JSON.parse(e.target.value);
+              setSelectedItemId(parsed.id);
+              setWorkingPost({
+                ...workingPost,
+                itemId: parsed.id,
+                itemName: parsed.name,
+              });
             }
           }}
         >
           <option value="" disabled>-- Select Item --</option>
           {items.map((item) => (
-            <option key={item.id} value={item.id}>
+            <option key={item.id} value={JSON.stringify({ id: item.id, name: item.title })}>
               {item.title}
             </option>
           ))}
@@ -219,7 +224,6 @@ function PostEdit({ post, currentUser }) {
 
       </div>
       <button className="tasty-button small-button" onClick={async () => {
-        delete workingPost.authorName;
 
         // Ensure itemId is set
         if (!workingPost.itemId && selectedItemId) {

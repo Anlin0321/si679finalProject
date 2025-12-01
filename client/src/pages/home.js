@@ -274,7 +274,7 @@ function Home() {
                 posts.map((post) => (
                   <tr key={post.id}>
                     <td><Link to={`/viewPost/${post.id}`}>{post.title}</Link></td>
-                    <td>{post.itemTitle || 'No Item'}</td>
+                    <td>{post.itemName || 'No Item'}</td>
                     <td>{post.authorName}</td>
                     <td>${post.price}</td>
                   </tr>
