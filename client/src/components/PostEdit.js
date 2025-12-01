@@ -73,7 +73,7 @@ function PostEdit({ post, currentUser }) {
             } else {
               setIsCreatingNewItem(false);
               const parsed = JSON.parse(e.target.value);
-              setSelectedItemId(parsed.id);
+              setSelectedItemId(e.target.value);
               setWorkingPost({
                 ...workingPost,
                 itemId: parsed.id,
