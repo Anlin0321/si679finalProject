@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import io from 'socket.io-client';
 
 import { getPostsWithAuthorNamesAndItems } from "../data/posts";
 import { getItems } from "../data/items";
+import { API_URL } from "../data/api";
 
 
 function Home() {
@@ -40,6 +42,47 @@ function Home() {
     loadItems();
   }, []);
 
+  useEffect(() => {
+    const fetchAllPosts = async () => {
+      let posts = await getPostsWithAuthorNamesAndItems(null, {});
+      posts = posts.map(post => ({ ...post }));
+      setPosts(posts);
+    };
+
+    fetchAllPosts();
+
+    const socket = io(API_URL);
+
+    const handleUpdate = (postId, updatedFields) => {
+      console.log('updatePost received', postId, updatedFields);
+      setPosts(posts => posts.map(
+        b => (b.id === postId ? { ...b, ...updatedFields } : b)
+      ));
+    };
+
+    const handleAdd = (newPost) => {
+      console.log('addedPost received', newPost);
+      setPosts(prev => [...prev, newPost]);
+    };
+
+    const handleDelete = (deleteId) => {
+      console.log('deletedPost received', deleteId);
+      setPosts(prev => prev.filter(post => post.id !== deleteId));
+    };
+
+    socket.on('updatePost', handleUpdate);
+    socket.on('addPost', handleAdd);
+    socket.on('deletePost', handleDelete);
+
+    // 🔥 CLEANUP is REQUIRED (especially in Strict Mode)
+    return () => {
+      socket.off('updatePost', handleUpdate);
+      socket.off('addPost', handleAdd);
+      socket.off('deletePost', handleDelete);
+      socket.disconnect();
+    };
+  }, []);
+
   // Fetch posts with filters (only when appliedFilters changes)
   useEffect(() => {
     const fetchPosts = async () => {
@@ -52,7 +95,6 @@ function Home() {
       });
 
       const posts = await getPostsWithAuthorNamesAndItems(null, activeFilters);
-      console.log('in Home useEffect, posts were fetched:', posts);
       setPosts(posts);
     };
     fetchPosts();

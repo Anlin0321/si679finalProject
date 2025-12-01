@@ -1,6 +1,8 @@
 import { db } from '../db/db.js';
 import { Post } from '../models/postModel.js';
 import { itemService } from './itemService.js';
+import { socket } from '../socket/clientUpdate.js';
+
 
 // Validation constants
 const VALID_AVAILABILITY_STATUSES = ['available', 'sold', 'reserved', 'removed'];
@@ -103,6 +105,38 @@ const buildFilterQuery = (filters) => {
     return query;
 }
 
+let changeStream = null;
+const watchPosts = async () => {
+    const callback = (change) => {
+        if (change.operationType === 'update') {
+            console.log('change', change.updateDescription.updatedFields);
+            socket.updatePost(
+                change.documentKey._id.toString(),
+                change.updateDescription.updatedFields
+            );
+        }
+        else if (change.operationType === 'insert') {
+            console.log('add', change.fullDocument);
+            socket.addPost(
+                change.fullDocument
+            );
+        }
+        else if (change.operationType === 'delete') {
+            console.log('delete', change.documentKey._id.toString());
+            socket.deletePost(
+                change.documentKey._id.toString()
+            );
+        }
+    };
+    changeStream = await db.watchCollection(db.PRODUCTS, callback);
+    console.log('watching products');
+}
+
+const stopWatchingPosts = async () => {
+    await db.closeChangeStream(changeStream);
+    changeStream = null;
+}
+
 const getAll = async () => {
     const postDocs = await db.getAllInCollection(db.POSTS);
     return postDocs.map(pDoc => Post.fromPostDocument(pDoc));
@@ -158,6 +192,8 @@ const getByFilters = async (filters) => {
 }
 
 export const postService = {
+    watchPosts,
+    stopWatchingPosts,
     getAll,
     getById,
     getByAuthorId,

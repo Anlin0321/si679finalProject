@@ -92,6 +92,7 @@ export {
   handlePost,
   handleDelete,
   handlePatch,
+  API_URL,
   ARTICLES_ENDPOINT,
   AUTH_ENDPOINT,
   ADMIN_ENDPOINT,
