@@ -57,12 +57,12 @@ app.use(errorHandler);
 app.use(
     express.static(
         path.join(
-            serverPath, 'jb-client/build')
+            serverPath, 'client/build')
     ));
 app.get('/', (req, res) => {
     res.sendFile(
         path.join(
-            serverPath, 'jb-client/build/index.html'));
+            serverPath, 'client/build/index.html'));
 });
 
 
