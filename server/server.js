@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import http from 'http';
+import path from 'path';
+
 
 // import https from 'https';  // Commented out for HTTP in development
 
@@ -17,6 +19,8 @@ import { postService } from './services/postService.js';
 
 dotenv.config();
 
+const serverPath = process.env.SERVER_DIR || import.meta.dirname;
+
 const port = 6790;
 const app = express();
 const server = http.createServer(app);
@@ -30,10 +34,10 @@ app.use(express.static('static'));
 
 app.use(express.json());
 
-app.use('/posts', postRouter);
-app.use('/login', authRouter);
-app.use('/items', itemRouter);
-app.use('/user', userRouter);
+app.use('/api/posts', postRouter);
+app.use('/api/login', authRouter);
+app.use('/api/items', itemRouter);
+app.use('/api/user', userRouter);
 
 // Error handler must be LAST to catch errors from routes
 app.use(errorHandler);
@@ -49,6 +53,17 @@ app.use(errorHandler);
 // httpsServer.listen(port, () => {
 //     console.log(`Server started on port ${port}`)
 // })
+
+app.use(
+    express.static(
+        path.join(
+            serverPath, 'jb-client/build')
+    ));
+app.get('/', (req, res) => {
+    res.sendFile(
+        path.join(
+            serverPath, 'jb-client/build/index.html'));
+});
 
 
 postService.watchPosts();

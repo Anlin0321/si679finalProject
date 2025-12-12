@@ -259,6 +259,7 @@ function Home() {
               <tr>
                 <th>Title</th>
                 <th>Item</th>
+                <th>Type</th>
                 <th>Author</th>
                 <th>Price</th>
               </tr>
@@ -275,6 +276,7 @@ function Home() {
                   <tr key={post.id}>
                     <td><Link to={`/viewPost/${post.id}`}>{post.title}</Link></td>
                     <td>{post.itemName || 'No Item'}</td>
+                    <td>{post.listingType}</td>
                     <td>{post.authorName}</td>
                     <td>${post.price}</td>
                   </tr>
