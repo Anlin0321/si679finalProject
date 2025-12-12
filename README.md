@@ -60,10 +60,10 @@ Create a file named `.env` in both `client` and `server` directories.
 
 ### Format
 ```
-PORT=6790
-NODE_ENV=development
+REACT_APP_API_URL=<deployed_ip:6790>
+```
 
-DB_HOST=localhost
+```
 DB_URL=mongodb://127.0.0.1:27017
 DB_NAME=finalProject
 
@@ -75,6 +75,8 @@ JWT_PRIVATE_KEY=<self_generated_key>
 
 JWT_PUBLIC_KEY=<self_generated_key>
 ```
+
+
 ## Installation
 
 Clone the repository:
